@@ -15,17 +15,19 @@ class SVM4342 ():
 
         sample_num, data_len = X.shape
 
-        ones = np.atleast_2d(np.ones(sample_num)).T
-        X = np.hstack((X, ones))
+        # ones = np.atleast_2d(np.ones(sample_num)).T
+        X = np.hstack((X, np.atleast_2d(np.ones(sample_num)).T))
         bias_data_len = data_len + 1
 
         # TODO change these -- they should be np.arrays representing matrices or vectors
         # b = last elem of X
-        G = np.zeros((sample_num,1))
+        G = np.zeros((sample_num,bias_data_len))
         for i in range(bias_data_len):
-            G -= np.dot(X[:, i], y) # make y negitive by subtracting from G
-        G = G.T
-        h = np.array([-1])
+            print(X[:, i])
+            print(np.multiply(X[:, i], -y))
+            G[:, i] = np.multiply(X[:, i], -y) # make y negative by subtracting from G
+
+        h = -1 * np.ones(sample_num)
         P = np.ones((sample_num, sample_num))
         q = np.zeros(sample_num)
 
