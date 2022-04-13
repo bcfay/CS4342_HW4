@@ -2,7 +2,8 @@ from cvxopt import solvers, matrix
 import numpy as np
 import sklearn.svm
 
-class SVM4342 ():
+
+class SVM4342:
     def __init__ (self):
         pass
 
@@ -26,7 +27,7 @@ class SVM4342 ():
             G -= np.dot(X[:, i], y) # make y negitive by subtracting from G
         G = G.T
         h = np.array([-1])
-        P = np.ones((sample_num, sample_num))
+        P = np.identity(sample_num)
         q = np.zeros(sample_num)
 
         # Solve -- if the variables above are defined correctly, you can call this as-is:
@@ -36,9 +37,11 @@ class SVM4342 ():
         # To avoid any annoying errors due to broadcasting issues, I recommend
         # that you flatten() the w you retrieve from the solution vector so that
         # it becomes a 1-D np.array.
+        flattened_soln = np.array(sol['x']).flatten()
         
-        self.w = 0  # TODO change this
-        self.b = 0  # TODO change this
+        self.w = flattened_soln[:-1]  # TODO change this
+        self.b = flattened_soln[-1]  # TODO change this
+        zero = 0
 
     # Given a 2-D matrix of examples X, output a vector of predicted class labels
     def predict (self, x):
