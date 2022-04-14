@@ -46,7 +46,6 @@ class SVM4342:
 
         self.w = flattened_soln[:-1]  # TODO change this
         self.b = flattened_soln[-1]  # TODO change this
-        zero = 0
 
     def data4wewights(self, X):
         sample_num, data_len = X.shape
