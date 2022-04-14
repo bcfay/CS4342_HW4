@@ -43,7 +43,12 @@ print("Weights:", ws, "\nBases:", bs)
 w_test =  [[10000000005], [-5]]
 #w_test = [[-0.3], [1]]
 xvar = ws[0]
-yvar = ws[1]#[0]
+yvar = ws[1] #[0]
+result = yvar.strip('][').split(' ')
+yvar = float(result[0])
+if(yvar == 0):
+    yvar = 0.00000000001
+
 #w_test_2 = [[np.dot(yvar, -1)], [xvar]]
 t = np.dot(np.atleast_2d(x).T, np.atleast_2d(np.array(-1/yvar)).T).T
 yy_test = t  #- 1.6
