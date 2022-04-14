@@ -42,9 +42,9 @@ class SVM4342:
         # that you flatten() the w you retrieve from the solution vector so that
         # it becomes a 1-D np.array.
         flattened_soln = np.array(sol['x']).flatten()
-
         self.w = flattened_soln[:-1]  
         self.b = flattened_soln[-1]
+
     def data4wewights(self, X):
         sample_num, data_len = X.shape
         X = np.hstack((X, np.atleast_2d(np.ones(sample_num)).T))
@@ -56,8 +56,7 @@ class SVM4342:
         weights = np.atleast_2d(np.hstack((self.w, self.b))).T
         x = self.data4wewights(x)
         predictions = np.rint(np.dot(x, weights))
-        return predictions  # TODO fix
-
+        return predictions
 
 def test1():
     # Set up toy problem
