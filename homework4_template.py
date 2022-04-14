@@ -56,6 +56,11 @@ class SVM4342:
         weights = np.atleast_2d(np.hstack((self.w, self.b))).T
         x = self.data4wewights(x)
         predictions = np.rint(np.dot(x, weights))
+        for i in range(samplenum):
+            if(predictions[i] > 1):
+                predictions[i] = 1
+            if(predictions[i] < -1):
+                predictions[i] = -1
         return predictions
 
 def test1():
@@ -129,6 +134,12 @@ def test2(seed):
     print(svm.coef_.flatten().shape)
     diff = np.linalg.norm(svm.coef_.flatten() - svm4342.w) + np.abs(svm.intercept_ - svm4342.b)
     print(diff)
+
+
+    our_pred = svm4342.predict(X).T
+    print('our_pred', our_pred)
+    lib_pred = svm.predict(X)
+    print('lib_pred', lib_pred)
 
     acc = np.mean(svm4342.predict(X) == svm.predict(X))
     print("Acc={}".format(acc))
