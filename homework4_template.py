@@ -22,7 +22,6 @@ class SVM4342:
         X = self.data4wewights(X)
         bias_data_len = data_len + 1
 
-        # TODO change these -- they should be np.arrays representing matrices or vectors
 
         G = np.zeros((sample_num, bias_data_len))
         for i in range(bias_data_len):
@@ -44,9 +43,8 @@ class SVM4342:
         # it becomes a 1-D np.array.
         flattened_soln = np.array(sol['x']).flatten()
 
-        self.w = flattened_soln[:-1]  # TODO change this
-        self.b = flattened_soln[-1]  # TODO change this
-        vector2csv(self.w, self.b)
+        self.w = flattened_soln[:-1]  
+        self.b = flattened_soln[-1]
     def data4wewights(self, X):
         sample_num, data_len = X.shape
         X = np.hstack((X, np.atleast_2d(np.ones(sample_num)).T))
@@ -70,6 +68,29 @@ def test1():
     svm4342 = SVM4342()
     svm4342.fit(X, y)
     print(svm4342.w, svm4342.b)
+    #TODO generate other two hyperplanes here
+    ws = []
+    bs = []
+    #add vales for the first H
+    normal_plane_w = 0 #TODO placeholder
+    normal_plane_b = 0 #TODO placeholder
+
+    ws.append(normal_plane_w)
+    bs.append(normal_plane_b)
+   #add vales for the second H
+    second_plane_w = 0 #TODO placeholder
+    second_plane_b = 0 #TODO placeholder
+
+    ws.append(second_plane_w)
+    bs.append(second_plane_b)
+   #add vales for the third, trained H
+
+    ws.append(svm4342.w)
+    bs.append(svm4342.b)
+
+    vector2csv(ws, bs)
+
+
 
     # Compare with sklearn
     svm = sklearn.svm.SVC(kernel='linear', C=1e15)  # 1e15 -- approximate hard-margin
