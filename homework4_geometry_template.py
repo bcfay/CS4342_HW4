@@ -9,7 +9,7 @@ x = np.arange(-8, +8, 0.01)
 plt.scatter(X[0, 0:n], X[1, 0:n])
 plt.scatter(X[0, n:], X[1, n:])
 
-graph_data = open('HW3_part2.csv', 'r').read()
+graph_data = open('HW4_Vectors.csv', 'r').read()
 lines = graph_data.split('\n')
 ws = []
 bs = []
