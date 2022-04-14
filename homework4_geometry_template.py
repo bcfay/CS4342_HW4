@@ -27,7 +27,15 @@ print("Weights:", ws, "Bases:", bs)
 #TODO make this based on ws and bs
 # y = mx + b (linear equation)
 # y = wx + b for us (?)
-plt.plot(x.T, np.dot(np.atleast_2d(np.array(ws)).T,  np.atleast_2d(x)).T + 0, 'k-')
+#yy = np.dot(np.atleast_2d(x).T, np.atleast_2d(np.array(ws))).T + np.array(bs)
+#plt.plot(x.T, yy[1].T, 'k-')
+w_test =  [[0], [0]]
+#w_test = [[-0.3], [1]]
+xvar = w_test[0]
+yvar = w_test[1]
+w_test_2 = [[np.dot(yvar, -1)], [xvar]]
+yy_test = np.dot(np.atleast_2d(x).T, np.atleast_2d(np.array(w_test)).T).T #- 1.6
+plt.plot(x, yy_test.T, 'k--')
 #plt.plot(x, x * -1.9 + 3 + 1, 'k--')
 #plt.plot(x, x * -1.9 + 3 - 1, 'k:')
 plt.show()
