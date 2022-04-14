@@ -17,25 +17,23 @@ class SVM4342:
         sample_num, data_len = X.shape
 
         # ones = np.atleast_2d(np.ones(sample_num)).T
-        X = np.hstack((X, np.atleast_2d(np.ones(sample_num)).T))
+        X = self.data4wewights(X)
         bias_data_len = data_len + 1
 
         # TODO change these -- they should be np.arrays representing matrices or vectors
-        # G = np.zeros((sample_num,bias_data_len))
-        # for i in range(bias_data_len):
-        #     G -= np.dot(X[:, i], y) # make y negitive by subtracting from G
+
 
         G=np.zeros((sample_num,bias_data_len))
         for i in range(bias_data_len):
             print(X[:,i])
             print(np.multiply(X[:,i],-y))
             G[:,i]=np.multiply(X[:,i],-y)#makeynegativebysubtractingfromG
-        G = G.T
+        # G = G.T
 
 
-        h = np.ones(bias_data_len) * -1
-        P = np.identity(sample_num)
-        q = np.zeros(sample_num)
+        h = np.ones(sample_num) * -1
+        P = np.identity(bias_data_len)
+        q = np.zeros(bias_data_len)
 
         # Solve -- if the variables above are defined correctly, you can call this as-is:
         sol = solvers.qp(matrix(P, tc='d'), matrix(q, tc='d'), matrix(G, tc='d'), matrix(h, tc='d'))
@@ -50,11 +48,17 @@ class SVM4342:
         self.b = flattened_soln[-1]  # TODO change this
         zero = 0
 
+    def data4wewights(self, X):
+        sample_num, data_len = X.shape
+        X = np.hstack((X, np.atleast_2d(np.ones(sample_num)).T))
+        return X
+
     # Given a 2-D matrix of examples X, output a vector of predicted class labels
     def predict (self, x):
         samplenum, data_len_withbias = x.shape
         weights = np.atleast_2d(np.hstack((self.w, self.b))).T
-        predictions = np.dot(x.T, weights)
+        x = self.data4wewights(x)
+        predictions = np.rint(np.dot(x, weights))
         return predictions  # TODO fix
 
 def test1 ():
@@ -72,7 +76,12 @@ def test1 ():
     svm.fit(X, y)
     print(svm.coef_, svm.intercept_)
 
-    acc = np.mean(svm4342.predict(X) == svm.predict(X))
+    our_pred = svm4342.predict(X).T
+    print('our_pred', our_pred)
+    lib_pred = svm.predict(X)
+    print('lib_pred', lib_pred)
+
+    acc = np.mean(our_pred == lib_pred)
     print("Acc={}".format(acc))
 
 def test2 (seed):
