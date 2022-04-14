@@ -21,12 +21,18 @@ class SVM4342:
         bias_data_len = data_len + 1
 
         # TODO change these -- they should be np.arrays representing matrices or vectors
-        # b = last elem of X
-        G = np.zeros((sample_num,bias_data_len))
-        for i in range(bias_data_len):
+        # G = np.zeros((sample_num,bias_data_len))
+        # for i in range(bias_data_len):
+        #     G -= np.dot(X[:, i], y) # make y negitive by subtracting from G
 
-            G -= np.dot(X[:, i], y) # make y negitive by subtracting from G
+        G=np.zeros((sample_num,bias_data_len))
+        for i in range(bias_data_len):
+            print(X[:,i])
+            print(np.multiply(X[:,i],-y))
+            G[:,i]=np.multiply(X[:,i],-y)#makeynegativebysubtractingfromG
         G = G.T
+
+
         h = np.ones(bias_data_len) * -1
         P = np.identity(sample_num)
         q = np.zeros(sample_num)
