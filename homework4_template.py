@@ -153,7 +153,7 @@ def vector2csv(w, b):
     my_df = {'Weights': w,
              'Bases': b}
     df = pd.DataFrame(my_df)
-    df.to_csv(file_path, header=False)
+    df.to_csv(file_path, header=True)
 
 
 if __name__ == "__main__":
