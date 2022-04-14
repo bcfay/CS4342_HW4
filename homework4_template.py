@@ -76,13 +76,13 @@ def test1():
     ws = []
     bs = []
     #add vales for the first H
-    normal_plane_w = [0, 0] #TODO placeholder
+    normal_plane_w = np.array([0, 0]) #TODO placeholder
     normal_plane_b = 0 #TODO placeholder
 
     ws.append(normal_plane_w)
     bs.append(normal_plane_b)
    #add vales for the second H
-    second_plane_w = [0, 0] #TODO placeholder
+    second_plane_w = np.array([0, 0]) #TODO placeholder
     second_plane_b = 0 #TODO placeholder
 
     ws.append(second_plane_w)
