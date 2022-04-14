@@ -24,9 +24,10 @@ class SVM4342:
         # b = last elem of X
         G = np.zeros((sample_num,bias_data_len))
         for i in range(bias_data_len):
+
             G -= np.dot(X[:, i], y) # make y negitive by subtracting from G
         G = G.T
-        h = -1 * np.ones(sample_num)
+        h = np.ones(bias_data_len) * -1
         P = np.identity(sample_num)
         q = np.zeros(sample_num)
 
@@ -85,6 +86,7 @@ def test2 (seed):
     # Compare with sklearn
     svm = sklearn.svm.SVC(kernel='linear', C=1e15)  # 1e15 -- approximate hard margin
     svm.fit(X, y)
+    svm.coef_.flatten().shape
     diff = np.linalg.norm(svm.coef_.flatten() - svm4342.w) + np.abs(svm.intercept_ - svm4342.b)
     print(diff)
 
