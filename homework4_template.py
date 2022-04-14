@@ -1,4 +1,4 @@
-from turtle import pd
+import pandas as pd
 
 from cvxopt import solvers, matrix
 import numpy as np
@@ -46,7 +46,7 @@ class SVM4342:
 
         self.w = flattened_soln[:-1]  # TODO change this
         self.b = flattened_soln[-1]  # TODO change this
-
+        vector2csv(self.w, self.b)
     def data4wewights(self, X):
         sample_num, data_len = X.shape
         X = np.hstack((X, np.atleast_2d(np.ones(sample_num)).T))
