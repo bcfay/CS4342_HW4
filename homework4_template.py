@@ -136,16 +136,16 @@ def test2(seed):
     print(diff)
 
 
-    our_pred = svm4342.predict(X).T
+    our_pred = svm4342.predict(X).T[0]
     print('our_pred', our_pred)
     lib_pred = svm.predict(X)
     print('lib_pred', lib_pred)
 
-    acc = np.mean(svm4342.predict(X) == svm.predict(X))
+    acc = np.mean(our_pred == lib_pred)
     print("Acc={}".format(acc))
 
     if acc == 1 and diff < 1e-1:
-        print("Passed")
+        print("----------Passed!----------")
 
 #w and b must be arrays
 def vector2csv(w, b):
