@@ -6,6 +6,7 @@ import sklearn.svm
 
 
 class SVM4342:
+
     def __init__(self):
         pass
 
@@ -63,6 +64,12 @@ class SVM4342:
                 predictions[i] = -1
         return predictions
 
+def remove_items(test_list, item):
+    # using list comprehension to perform the task
+    res = [i for i in test_list if i != item]
+
+    return res
+
 def test1():
     # Set up toy problem
     X = np.array([[1, 1], [2, 1], [1, 2], [2, 3], [1, 4], [2, 4]])
@@ -75,14 +82,26 @@ def test1():
     #TODO generate other two hyperplanes here
     ws = []
     bs = []
-    #add vales for the first H
-    normal_plane_w = np.array([0, 0]) #TODO placeholder
-    normal_plane_b = 0 #TODO placeholder
+    #add vales for the first H -- this is normal to [0 1]T
+    planeA = np.array([0, 1])
+    planeA_x = planeA[1]
+    planeA_y = planeA[0]
+    if planeA_y == 0:
+        planeA_y = 0.000000000001
+    planeA_y = -1 / planeA_y
+
+    normal_plane_w = np.array([planeA_y, planeA_x])   #TODO placeholder
+    normal_plane_b = 0                              #TODO placeholder
 
     ws.append(normal_plane_w)
     bs.append(normal_plane_b)
-   #add vales for the second H
-    second_plane_w = np.array([0, 0]) #TODO placeholder
+   #add vales for the second H -- this is normal to [-0.3 1]T
+    planeA2 = np.array([-0.3, 1])
+    planeA_x2 = planeA2[1]
+    planeA_y2 = planeA2[0]
+    if planeA_y2 == 0:
+        planeA_y2 = 0.000000000001
+    second_plane_w = np.array( [planeA_y2, planeA_x2] ) #TODO placeholder
     second_plane_b = 0 #TODO placeholder
 
     ws.append(second_plane_w)
@@ -90,10 +109,57 @@ def test1():
    #add vales for the third, trained H
 
     ws.append(svm4342.w)
-    bs.append(svm4342.b)
+    OFFSET = 1.89                            #TODO replace the offset with the actual bias of H
+    bs.append(svm4342.b + OFFSET)
 
     vector2csv(ws, bs)
 
+    # add vales for the fourth, trained H+
+    yvar = ws[2]
+    x_range = np.arange(-8, +8, 0.01)
+    #result = yvar.strip('][').split(' ')
+    result = remove_items(yvar, '')
+    yvar = float(result[0])
+    if (yvar == 0):
+        yvar = 0.00000000001
+    t = np.dot(np.atleast_2d(x_range).T, np.atleast_2d(np.array(-1 / yvar)).T).T
+
+    # ACCOUNTING FOR THE CLOSEST ORANGE----------------------
+    closestOrange = np.array([0, 0])
+    #t_v2 = np.dot(np.atleast_2d(np.array(closestOrange[0])).T, np.atleast_2d(np.array(-1 / yvar)).T).T
+    yy_test = t
+    b_Hplus = closestOrange[1] - (closestOrange[0]*ws[2][1] + svm4342.b)   # Y Index of the orange - Y index of the 3rd hyperplane (SVM)
+    print("closest orange Y: ", closestOrange[1])
+    print("redfunction Y at that x position: ", closestOrange[0]*ws[2][1] + svm4342.b)
+    print("H+ bias: ", b_Hplus)
+    ws.append(svm4342.w)
+    bs.append(svm4342.b + b_Hplus)
+
+    vector2csv(ws, bs)
+
+
+    #
+    # add vales for the fifth, trained H-
+    #yvar = ws[2]
+    #x_range = np.arange(-8, +8, 0.01)
+    # result = yvar.strip('][').split(' ')
+    #result = remove_items(yvar, '')
+    #yvar = float(result[0])
+    #if (yvar == 0):
+    #    yvar = 0.00000000001
+    #t = np.dot(np.atleast_2d(x_range).T, np.atleast_2d(np.array(-1 / yvar)).T).T
+    # ACCOUNTING FOR THE CLOSEST BLUE----------------------
+    closestBlue = np.array([1, -5])
+    # t_v2 = np.dot(np.atleast_2d(np.array(closestOrange[0])).T, np.atleast_2d(np.array(-1 / yvar)).T).T
+    yy_test = t
+    b_Hminus = closestBlue[1] - (closestBlue[0] * ws[2][1] + svm4342.b)  # Y Index of the orange - Y index of the 3rd hyperplane (SVM)
+    print("closest blue Y: ", closestBlue[1])
+    print("redfunction Y at that x position: ", closestBlue[0] * ws[2][1] + svm4342.b)
+    print("H- bias: ", b_Hminus)
+    ws.append(svm4342.w)
+    bs.append(svm4342.b)
+
+    vector2csv(ws, bs)
 
 
     # Compare with sklearn
