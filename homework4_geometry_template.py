@@ -55,9 +55,9 @@ print("Weights:\n", ws, "\nBases:\n", bs)
 w_test =  [[10000000005], [-5]]
 #w_test = [[-0.3], [1]]
 
-lineType = ['k:', 'k--', 'r-', '--', '--']  #SVM IS RED. hex(Orange) and BLUE are hyperplanes
+lineType = ['k:', 'k--', '-', '--', '--']  #SVM IS RED. hex(Orange) and BLUE are hyperplanes
 colorType = ['k', 'k', 'r', '#FFA500', 'b']
-hyperplaneCount = 5   #3
+hyperplaneCount = 5   #formerly 3 - adjusted to include support vectors
 for hyperplaneNumber in range(hyperplaneCount):
     xvar = ws[hyperplaneNumber]
     '''

@@ -109,7 +109,7 @@ def test1():
    #add vales for the third, trained H
 
     ws.append(svm4342.w)
-    OFFSET = 1.89                            #TODO replace the offset with the actual bias of H
+    OFFSET = 0#1.89                            #TODO replace the offset with the actual bias of H
     bs.append(svm4342.b + OFFSET)
 
     vector2csv(ws, bs)
@@ -128,13 +128,12 @@ def test1():
     closestOrange = np.array([0, 0])
     #t_v2 = np.dot(np.atleast_2d(np.array(closestOrange[0])).T, np.atleast_2d(np.array(-1 / yvar)).T).T
     yy_test = t
-    b_Hplus = closestOrange[1] - (closestOrange[0]*ws[2][1] + svm4342.b)   # Y Index of the orange - Y index of the 3rd hyperplane (SVM)
+    b_Hplus = closestOrange[1] - (closestOrange[0]*(-1)*ws[2][0] + svm4342.b)   # Y Index of the orange - Y index of the 3rd hyperplane (SVM)
     print("closest orange Y: ", closestOrange[1])
-    print("redfunction Y at that x position: ", closestOrange[0]*ws[2][1] + svm4342.b)
+    print("redfunction Y at that x position: ", closestOrange[0]*(-1)*ws[2][0] + svm4342.b)
     print("H+ bias: ", b_Hplus)
     ws.append(svm4342.w)
     bs.append(svm4342.b + b_Hplus)
-
     vector2csv(ws, bs)
 
 
@@ -152,15 +151,18 @@ def test1():
     closestBlue = np.array([1, -5])
     # t_v2 = np.dot(np.atleast_2d(np.array(closestOrange[0])).T, np.atleast_2d(np.array(-1 / yvar)).T).T
     yy_test = t
-    b_Hminus = closestBlue[1] - (closestBlue[0] * ws[2][1] + svm4342.b)  # Y Index of the orange - Y index of the 3rd hyperplane (SVM)
+    b_Hminus = closestBlue[1] - (closestBlue[0] * (-1)*ws[2][0] + svm4342.b)  # Y Index of the orange - Y index of the 3rd hyperplane (SVM) #flipped to negative intentionally - math did not work otherwise.
     print("closest blue Y: ", closestBlue[1])
-    print("redfunction Y at that x position: ", closestBlue[0] * ws[2][1] + svm4342.b)
+    print("redfunction Y at that x position: ", closestBlue[0] * (-1)*ws[2][0] + svm4342.b)
     print("H- bias: ", b_Hminus)
     ws.append(svm4342.w)
-    bs.append(svm4342.b)
+    bs.append(svm4342.b + b_Hminus)
 
+    # PROPERLY SETTING THE BIAS FOR H - IT NEEDS TO SET PRECISELY HALFWAY BETWEEN H+ AND H-  -----------
+    avgBias =(bs[3] + bs[4]) / 2
+    bs[2] = avgBias                       #bs[2] = SVM bias. this ensures the bias for H is perfectly between H+ and H-.
     vector2csv(ws, bs)
-
+    print("\n\nMARGIN: ", bs[3] - bs[4])
 
     # Compare with sklearn
     svm = sklearn.svm.SVC(kernel='linear', C=1e15)  # 1e15 -- approximate hard-margin
